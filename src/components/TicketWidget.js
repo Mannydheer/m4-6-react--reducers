@@ -35,51 +35,33 @@ const TicketWidget = () => {
   } = React.useContext(SeatContext);
   //need to return since it is a function
   if (hasLoaded === false) {
-    return <CircularProgress > < /CircularProgress>
+    return <CircularProgress></CircularProgress>
   }
-  return ( <
-    Wrapper > {
-      range(numOfRows).map(rowIndex => {
+
+  return ( <Wrapper> 
+    {range(numOfRows).map(rowIndex => {
         const rowName = getRowName(rowIndex);
 
-        return ( <
-          Row key = {
-            rowIndex
-          } >
-          <
-          RowLabel > Row {
-            rowName
-          } < /RowLabel> {
+    return (
+      <Row key = {rowIndex} >
+          <RowLabel > Row {rowName}
+           </RowLabel> {
             range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
 
               return (
-
-                <
-                SeatWrapper key = {
-                  seatId
-                } >
-                <
-                Seat seatId = {
-                  seatId
-                }
-                rowName = {
-                  rowName
-                }
-                seats = {
-                  seats
-                }
-                /> <
-                /SeatWrapper>
+              <SeatWrapper key = { seatId } >
+          <Seat seatId = {seatId}
+                rowName = {rowName}
+                seats = {seats}/>
+              </SeatWrapper>
               );
             })
-          } <
-          /Row>
+          } </Row>
         );
       })
-    } <
-    /Wrapper>
+    } </Wrapper>
   );
 
 };

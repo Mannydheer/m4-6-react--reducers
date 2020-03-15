@@ -29,12 +29,13 @@ const Seat = ({seatId, rowName, seats}) => {
 <React.Fragment>
       <Tippy content={`Price: ${seatPrice} Row: ${rowName} Seat: ${getNum}`}>
           <button onClick={() => {
-            receiveSelection({seatId, seatPrice });
+            receiveSelection({seatId, seatPrice});
           }}>
             <SeatSrc/>
        </button>
 
       </Tippy>
+
 
   </React.Fragment>
       )

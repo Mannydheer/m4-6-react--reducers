@@ -33,22 +33,16 @@
        });
    }, []);
    //we only want this code to redner once so the array is empty. 
-   return ( <
-     >
-     <
-     GlobalStyles / >
-     <
-     div >
-     <
-     TicketWidget / >
-
+   return ( <>
+     <GlobalStyles/>
+     <div>
+     <TicketWidget/>
      {
        /* Because it is a child of App? */ }
+      <PurchaseModal/>
 
-
-     <
-     /div> <
-     />
+     </div> 
+     </>
    );
  }
  export default App;

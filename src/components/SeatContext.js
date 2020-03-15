@@ -37,7 +37,6 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
 //its wrapped around App in the index.js
 export const SeatProvider = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
-    console.log(state)
 // It is as if APP WAS INSIDE, IT HAS ACCESS - see SeatContext.Provider
     const receiveSeatInfoFromServer = data => {
         dispatch({
