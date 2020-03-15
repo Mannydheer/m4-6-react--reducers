@@ -10,6 +10,7 @@ const BASE_PRICE = 225;
 const PRICE_INCREMENT_PER_ROW = -10;
 let state;
 router.get('/api/seat-availability', (req, res) => {
+  console.log('hihihihi')
   if (!state) {
     state = {
       seats: getInitialSeatData(),

@@ -1,10 +1,12 @@
 const express = require('express');
+const morgan = require('morgan')
 
 const PORT = 5678;
 
 var app = express();
 
 app.use(express.json());
+app.use(morgan('tiny'))
 
 app.use(require('./routes'));
 
