@@ -18,6 +18,7 @@ const Seat = ({seatId, rowName, seats}) => {
     let splitSeatId = seatId.split('-');
     let getNum = splitSeatId.pop();
     
+
     if (seats[seatId].isBooked === true) {
       return (
         <Btn>
@@ -28,15 +29,13 @@ const Seat = ({seatId, rowName, seats}) => {
       return (
 <React.Fragment>
       <Tippy content={`Price: ${seatPrice} Row: ${rowName} Seat: ${getNum}`}>
-          <button onClick={() => {
+          <Btn onClick={() => {
             receiveSelection({seatId, seatPrice});
           }}>
             <SeatSrc/>
-       </button>
+       </Btn>
 
       </Tippy>
-
-
   </React.Fragment>
       )
     }
@@ -46,7 +45,8 @@ const Seat = ({seatId, rowName, seats}) => {
   export default Seat;
 
   const Btn = styled.button`
-
+  background: none;
+  border: none;
 
   &:hover {
       cursor:pointer;

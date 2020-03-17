@@ -9,6 +9,8 @@
  import GlobalStyles from './GlobalStyles';
  import TicketWidget from './TicketWidget';
  import PurchaseModal from './PurchaseModal';
+import CustomizedSnackbars from './Snackbar';
+import styled from 'styled-components';
 
 
  function App() {
@@ -24,6 +26,7 @@
      }
    } = React.useContext(SeatContext);
 
+
    React.useEffect(() => {
      fetch('/api/seat-availability')
        .then((res) => res.json())
@@ -35,14 +38,27 @@
    //we only want this code to redner once so the array is empty. 
    return ( <>
      <GlobalStyles/>
-     <div>
+     <Wrapper>
      <TicketWidget/>
      {
        /* Because it is a child of App? */ }
       <PurchaseModal/>
+     
 
-     </div> 
+     </Wrapper> 
      </>
    );
  }
  export default App;
+
+ const Wrapper = styled.div `
+ display: flex;
+ justify-content: center;
+
+
+
+
+
+
+ 
+`;

@@ -19,12 +19,14 @@ export default function BasicTextFields({setCreditCard, setExpiration}) {
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
+
       <TextField id="standard-basic" label='Credit card' onChange={(event) => {
         setCreditCard(event.target.value)
       }}/>
       <TextField id="filled-basic" label="Expiration" variant="filled" onChange={(event) => {
         setExpiration(event.target.value)
       }} />
+      
     </form>
   );
 }

@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import styled from 'styled-components';
 import BasicTextFields from './textfield';
 import {BookingContext} from './BookingContext';
+import { SeatContext } from './SeatContext';
 
 export default function FormDialog({selectSeatId}) {
 
@@ -16,6 +17,11 @@ export default function FormDialog({selectSeatId}) {
     state: state,
     actions: {receiveSelection, removeModal, purchaseTicketFailure, purchaseTicketSuccess}} = React.useContext(BookingContext)
 
+    console.log(state, 'in form dialog');
+
+    const {
+      actions: { bookTheSeat },
+    } = React.useContext(SeatContext);
 
 //Hooks
 const [creditCard, setCreditCard] = React.useState('');
@@ -42,7 +48,8 @@ const handleBookSeat = () => {
 .then(res => {
   if (res.success === true)
   {
-    purchaseTicketSuccess({res})
+    purchaseTicketSuccess({res});
+    bookTheSeat(state.selectSeatId);
   }else if (res.message) {
     purchaseTicketFailure({res, selectSeatId, showPrice})
   }
@@ -51,15 +58,6 @@ const handleBookSeat = () => {
 })
 
 }
-
-    // #### POST `/api/book-seat`
-    // {
-    //   "seatId": "A-3",
-    //   "creditCard": "1234123412341234",
-    //   "expiration": "12/34"
-    // }
-    // ```
-
 
 //
   let showRow;
@@ -105,22 +103,22 @@ const handleBookSeat = () => {
             <div>{showPrice}</div>
           </div>
           </SeatInfo>
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
             id="name"
             label="Email Address"
             type="email"
             fullWidth
-          />
+          /> */}
           <BasicTextFields setCreditCard={setCreditCard} setExpiration={setExpiration}>
           </BasicTextFields>
 
         </DialogContent>
         <DialogActions>
-          <ButtonTag onClick={handleClose} color="primary">
+          {/* <ButtonTag onClick={handleClose} color="primary">
             Cancel
-          </ButtonTag>
+          </ButtonTag> */}
           <ButtonTag onClick={handleBookSeat} color="primary">
             Purchase
           </ButtonTag>

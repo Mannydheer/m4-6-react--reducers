@@ -1,8 +1,10 @@
 import React from 'react';
 import { createContext } from 'react';
+import { BookingContext } from 'react';
 
 //this is exported to app,js
 export const SeatContext = createContext();
+
 
 //DOUBLE CHECK: Is this global now?
 
@@ -12,6 +14,9 @@ const initialState = {
     numOfRows: 0,
     seatsPerRow: 0
 };
+
+
+
 
 function reducer (state, action) { //action now holds to keyvalue, type and a copy of data. 
     //todo'
@@ -26,8 +31,14 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
             seatsPerRow: action.seatsPerRow
 
         };
-
     }
+        case 'mark-seat-as-purchased': {
+            console.log(action.seatAvailability, 'action in seatContext')
+            return {
+                ...state,
+                seats: action.seats[action.seatAvailability].isBooked = true,
+            }
+        }
         default:
             throw new Error(`Unrecognized action: ${action.type}`);
     
@@ -37,6 +48,10 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
 //its wrapped around App in the index.js
 export const SeatProvider = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
+
+
+
+    console.log(state, 'state in seat context')
 // It is as if APP WAS INSIDE, IT HAS ACCESS - see SeatContext.Provider
     const receiveSeatInfoFromServer = data => {
         dispatch({
@@ -45,6 +60,16 @@ export const SeatProvider = ({ children }) => {
             ...data,
         });
     };
+
+    const bookTheSeat = (seatAvailability) => {
+
+        console.log(seatAvailability, 'in seat context the return of form dialog')
+        dispatch({
+            type: 'mark-seat-as-purchased',
+            seatAvailability
+
+        })
+    }
     return (
         <SeatContext.Provider
        
@@ -53,6 +78,7 @@ export const SeatProvider = ({ children }) => {
                 state,
                 actions: {
                     receiveSeatInfoFromServer,
+                    bookTheSeat
                 },
             }}
     >

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {SeatProvider} from './components/SeatContext'
 import {BookingProvider} from './components/BookingContext'
 import App from './components/App';
+import styled from 'styled-components';
 
 
 const rootElement = document.getElementById('root');
@@ -11,8 +12,9 @@ ReactDOM.render(
     //Now SeatProviders child so App will have access to the values
 <BookingProvider>
 <SeatProvider>
-<App/>
+    <App/>
 </SeatProvider>
 </BookingProvider>
 ,
  rootElement);
+

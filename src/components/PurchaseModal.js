@@ -1,6 +1,9 @@
 import React, {useContext} from 'react';
 import {BookingContext} from './BookingContext';
+import { SeatContext } from './SeatContext';
 import FormDialog from './FormDialog';
+import CustomizedSnackbars from './Snackbar';
+
 
 
 const PurchaseModal = () => {

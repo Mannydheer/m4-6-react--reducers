@@ -69,8 +69,9 @@ const Wrapper = styled.div `
   background: #eee;
   border: 1px solid #ccc;
   border-radius: 3px;
-  padding: 8px;
-  color: black
+  color: black;
+  
+
 `;
 
 const Row = styled.div `
@@ -87,7 +88,9 @@ const RowLabel = styled.div `
 `;
 
 const SeatWrapper = styled.div `
-  padding: 5px;
+  padding: 10px;
+ 
+
 `;
 
 export default TicketWidget;
