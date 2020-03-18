@@ -64,6 +64,13 @@ function reducer(state, action) {
 
             }
         }
+        
+        case 'track-seat-count': {
+            return {
+                ...state,
+                seatCounter: action.seatCount,
+            }
+        }
         default:
             throw new Error('ERROR');
     }
@@ -109,21 +116,41 @@ export const BookingProvider = ({
         })
     }
 
+    //keep track of seat counts. 
+    const seatCounter = (seatCount) => {
+        dispatch({
+            type: 'track-seat-count',
+            ...seatCount
+        })
+    }
+
     const [state, dispatch] = React.useReducer(reducer, initialState)
 
-console.log(state, 'in booking context')
-    // check for status of purchase. 
-       if (state.status === 'error' ) {
-           window.alert(state.error)
-       } else if (state.status === 'purchased') {
-          return (<CustomizedSnackbars status={state.status} snackBarRemoval={snackBarRemoval}/>  
 
-            )
-       }
+//If I have two return state.... it will do until that bit and then return... so it returend without rendering the seats. 
+//this return is for the whole componeent....    
+
+
+// if (state.status === 'error' ) {
+//     window.alert(state.error)
+// } else if (state.status === 'purchased') {
+//    return (<CustomizedSnackbars status={state.status} snackBarRemoval={snackBarRemoval}/>  
+
+//      )
+// }
+    // check for status of purchase. 
+
 
 
     return (
 
+        <React.Fragment>
+        
+        
+        {state.status === 'purchased' ? <CustomizedSnackbars status={state.status} snackBarRemoval={snackBarRemoval}/> : <> </>  }
+        {/* cannot return empty object.. instead could put the status being error with a window alert.  */}
+        
+    
         <BookingContext.Provider
 
             value={
@@ -134,6 +161,7 @@ console.log(state, 'in booking context')
                         removeModal,
                         purchaseTicketFailure,
                         purchaseTicketSuccess,
+                        seatCounter
 
                     },
                 }
@@ -142,5 +170,7 @@ console.log(state, 'in booking context')
             {
                 children
             } </BookingContext.Provider>
+
+            </React.Fragment>
     )
 }

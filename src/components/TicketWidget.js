@@ -52,7 +52,9 @@ const TicketWidget = () => {
 
               return (
               <SeatWrapper key = { seatId } >
-          <Seat seatId = {seatId}
+          <Seat 
+                key={seatId} //very important, react tracks this. 
+                seatId = {seatId}
                 rowName = {rowName}
                 seats = {seats}/>
               </SeatWrapper>

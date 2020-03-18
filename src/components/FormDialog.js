@@ -17,16 +17,12 @@ export default function FormDialog({selectSeatId}) {
     state: state,
     actions: {receiveSelection, removeModal, purchaseTicketFailure, purchaseTicketSuccess}} = React.useContext(BookingContext)
 
-    console.log(state, 'in form dialog');
 
-    const {
-      actions: { bookTheSeat },
-    } = React.useContext(SeatContext);
+    const {actions: { bookTheSeat } } = React.useContext(SeatContext);
 
 //Hooks
 const [creditCard, setCreditCard] = React.useState('');
 const [expiration, setExpiration] = React.useState('');
-
 
 const handleBookSeat = () => {
   fetch('/api/book-seat', 
@@ -54,11 +50,8 @@ const handleBookSeat = () => {
     purchaseTicketFailure({res, selectSeatId, showPrice})
   }
   
-  
 })
-
 }
-
 //
   let showRow;
   let showSeat;

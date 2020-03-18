@@ -5,6 +5,7 @@ import 'tippy.js/dist/tippy.css';
 import styled from 'styled-components';
 import { BookingContext } from './BookingContext';
 import PurchaseModal from './PurchaseModal';
+import CheckIcon from '@material-ui/icons/Check';
 
 
 
@@ -17,8 +18,21 @@ const Seat = ({seatId, rowName, seats}) => {
     let seatPrice = seats[seatId].price;
     let splitSeatId = seatId.split('-');
     let getNum = splitSeatId.pop();
-    
 
+    //make this a component;
+    if (seats[seatId].isAvailable === true && seats[seatId].isAvailable !== undefined ) {
+      return (
+        <React.Fragment>
+          <StyledImgCheck>
+            <SeatSrc style={{filter:'grayscale(100%'}}/>
+            <CheckIcon color='primary' fontSize='large'></CheckIcon>
+          </StyledImgCheck>
+        </React.Fragment>
+      )
+    }
+    //
+
+//DOES EVERYTHING AGAIN. 
     if (seats[seatId].isBooked === true) {
       return (
         <Btn>
@@ -48,7 +62,15 @@ const Seat = ({seatId, rowName, seats}) => {
   background: none;
   border: none;
 
+
   &:hover {
       cursor:pointer;
   }
+  `
+
+  const StyledImgCheck = styled.span`
+  display: inline;
+
+
+
   `

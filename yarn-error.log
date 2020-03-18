@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/13.8.0/bin/node /usr/local/Cellar/yarn/1.22.0/libexec/bin/yarn.js add @material-ui/core/Button @material-ui/core/TextField @material-ui/core/Dialog @material-ui/core/DialogActions @material-ui/core/DialogContent @material-ui/core/DialogContentText @material-ui/core/DialogTitle
+  /usr/local/Cellar/node/13.8.0/bin/node /usr/local/Cellar/yarn/1.22.0/libexec/bin/yarn.js add @material-ui/icons/Check
 
 PATH: 
   /Users/maniderdheer/Desktop/Enter/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/maniderdheer/Desktop/Enter/bin:/Library/Frameworks/Python.framework/Versions/3.8/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@material-ui%2fcore/Button: Request "https://registry.yarnpkg.com/@material-ui%2fcore/Button" returned a 405
+  Error: https://registry.yarnpkg.com/@material-ui%2ficons/Check: Request "https://registry.yarnpkg.com/@material-ui%2ficons/Check" returned a 405
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:66984:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:140727:22)
       at Request.emit (events.js:321:20)

@@ -11,7 +11,8 @@ function Alert(props) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    height: '10%',
+    width: '10%',
     '& > * + *': {
       marginTop: theme.spacing(2)
       ,
@@ -22,27 +23,16 @@ const useStyles = makeStyles(theme => ({
 export default function CustomizedSnackbars({ status, snackBarRemoval }) {
   const classes = useStyles();
 
-  //hook to change value of IsBooked.... ask if it's okay to do this from here?
-
-  // const{ 
-  // state: state,
-  // actions: {bookTheSeat}} = React.useContext(SeatContext)
-
-  // console.log(state, 'inside Snackbar')
-
-
-
   const handleClose = () => {
     status = 'idle';
     snackBarRemoval(status)
   };
 
-
-
   return (
     <div className={classes.root}>
 
-      <Snackbar open={status === 'purchased'} onClose={handleClose}>
+{/* set more specific conditions. */}
+      <Snackbar open={status === 'purchased' ? true : false} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
           Successfully purchased the show! Enjoy :)
         </Alert>

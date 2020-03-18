@@ -33,10 +33,16 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
         };
     }
         case 'mark-seat-as-purchased': {
-            console.log(action.seatAvailability, 'action in seatContext')
+
+            let changedSeats = {...state.seats};
+            //object are reference types...
+            changedSeats[action.seatAvailability].isBooked = true;
+            changedSeats[action.seatAvailability].isAvailable = true;
+
             return {
                 ...state,
-                seats: action.seats[action.seatAvailability].isBooked = true,
+                seats: changedSeats
+                
             }
         }
         default:
@@ -48,6 +54,10 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
 //its wrapped around App in the index.js
 export const SeatProvider = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
+
+    //anything associated withr educer, state... will cause a changer. 
+    //re-renders everything associated with this STATE. 
+  
 
 
 
