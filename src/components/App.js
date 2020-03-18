@@ -1,30 +1,23 @@
- import React, {
-   useState,
-   useContext,
-   useEffect
- } from 'react';
+ import React from 'react';
  import {
    SeatContext
  } from './SeatContext';
  import GlobalStyles from './GlobalStyles';
  import TicketWidget from './TicketWidget';
  import PurchaseModal from './PurchaseModal';
-import CustomizedSnackbars from './Snackbar';
 import styled from 'styled-components';
 
 
  function App() {
    //keep in mind, it's like App was inside SeatProvider.
    const {
-     state: {
-       numOfRows,
-       seatsPerRow,
-       seats
-     },
+    
      actions: {
        receiveSeatInfoFromServer
      }
    } = React.useContext(SeatContext);
+
+
 
 
    React.useEffect(() => {
@@ -35,6 +28,10 @@ import styled from 'styled-components';
 
        });
    }, []);
+
+
+
+
    //we only want this code to redner once so the array is empty. 
    return ( <>
      <GlobalStyles/>
@@ -43,9 +40,15 @@ import styled from 'styled-components';
      {
        /* Because it is a child of App? */ }
       <PurchaseModal/>
+      <div>
+      {/* {state !== undefined ? <SeatCounter state={state}/> : <div></div> } */}
+      </div>
      
 
      </Wrapper> 
+     <FlightTitle>
+       SEATBOOKER.CA
+     </FlightTitle>
      </>
    );
  }
@@ -53,13 +56,17 @@ import styled from 'styled-components';
 
  const Wrapper = styled.div `
  display: flex;
- justify-content: center;
+ justify-content: space-around;
  height: 80vh;
+ padding: 50px;
+
+`;
 
 
+const FlightTitle = styled.div `
+display: flex;
+justify-content: center;
+font-size: 5em;
+color: white;
 
-
-
-
- 
 `;

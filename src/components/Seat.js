@@ -1,31 +1,53 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { ReactComponent as SeatSrc } from '../assets/seat-available.svg';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import styled from 'styled-components';
 import { BookingContext } from './BookingContext';
-import PurchaseModal from './PurchaseModal';
-import CheckIcon from '@material-ui/icons/Check';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import {SeatContext} from './SeatContext';
+import AirlineSeatReclineNormalIcon from '@material-ui/icons/AirlineSeatReclineNormal';
 
 
+// let holderSeat = [];
 
 const Seat = ({seatId, rowName, seats}) => {
 
-  const {
-    state: {},
+    const {
     actions: {receiveSelection}} = React.useContext(BookingContext)
 
+    const {state: state,
+    actions: {seatCounter}} = React.useContext(SeatContext)
+//
+    const [visible, setVisible] = React.useState(false);
+    const visibility = visible ? 'visible' : 'hidden'
+//
+
+  const [select, setSelected] = React.useState(true);
+  console.log(select,'select inside ')
+
+
+// console.log(state, 'STATE INSIDE')
+
+    //-----------------
     let seatPrice = seats[seatId].price;
     let splitSeatId = seatId.split('-');
     let getNum = splitSeatId.pop();
+    //-----------------
+
+
 
     //make this a component;
-    if (seats[seatId].isAvailable === true && seats[seatId].isAvailable !== undefined ) {
+    if (seats[seatId].isClicked === true && seats[seatId].isClicked !== undefined && state.isPurchased === true) {
       return (
         <React.Fragment>
           <StyledImgCheck>
             <SeatSrc style={{filter:'grayscale(100%'}}/>
-            <CheckIcon color='primary' fontSize='large'></CheckIcon>
+            <CheckCircleIcon style={{ color: 'green' }} ></CheckCircleIcon>
+            {/* <div>
+              {handleSeatTracker(seatId)}
+            </div> */}
+
           </StyledImgCheck>
         </React.Fragment>
       )
@@ -44,12 +66,19 @@ const Seat = ({seatId, rowName, seats}) => {
 <React.Fragment>
       <Tippy content={`Price: ${seatPrice} Row: ${rowName} Seat: ${getNum}`}>
           <Btn onClick={() => {
-            receiveSelection({seatId, seatPrice});
+            receiveSelection({seatId, seatPrice, isClicked: select}); //double check isclicked here
+            seatCounter({seatId, seatPrice, select});
+            setVisible(!visible);
+            setSelected(!select);
+          
           }}>
             <SeatSrc/>
        </Btn>
-
       </Tippy>
+      <div>
+      <AirlineSeatReclineNormalIcon style={{visibility}}/>
+      </div>
+
   </React.Fragment>
       )
     }
@@ -70,6 +99,7 @@ const Seat = ({seatId, rowName, seats}) => {
 
   const StyledImgCheck = styled.span`
   display: inline;
+
 
 
 

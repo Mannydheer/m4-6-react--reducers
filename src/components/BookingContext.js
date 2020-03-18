@@ -1,11 +1,9 @@
-import React, {
-    useReducer, isValidElement
-} from 'react';
+import React from 'react';
 import {
     createContext
 } from 'react';
 import CustomizedSnackbars from './Snackbar';
-import { SeatProvider } from './SeatContext';
+import styled from 'styled-components';
 
 
 export const BookingContext = createContext();
@@ -25,8 +23,7 @@ function reducer(state, action) {
                 status: 'seat-selected',
                 selectSeatId: action.seatId,
                 price: action.seatPrice,
-
-
+                selected: action.isClicked,
             };
         }
         case 'remove-booking-process': {
@@ -53,6 +50,7 @@ function reducer(state, action) {
                 error: null,
                 selectSeatId: null,
                 price: null
+                
 
 
             }
@@ -65,12 +63,12 @@ function reducer(state, action) {
             }
         }
         
-        case 'track-seat-count': {
-            return {
-                ...state,
-                seatCounter: action.seatCount,
-            }
-        }
+        // case 'track-seat-count': {
+        //     return {
+        //         ...state,
+        //         seatCounter: action.seatCount,
+        //     }
+        // }
         default:
             throw new Error('ERROR');
     }
@@ -82,6 +80,7 @@ export const BookingProvider = ({
 
 
     const receiveSelection = (seatData) => {
+        // console.log(seatData, 'isCLicked trye')
         dispatch({
             type: 'begin-booking-process',
             ...seatData
@@ -115,44 +114,39 @@ export const BookingProvider = ({
             ...receivedStatus
         })
     }
+    const updateSeats = (seatUpdate) => {
 
-    //keep track of seat counts. 
-    const seatCounter = (seatCount) => {
         dispatch({
-            type: 'track-seat-count',
-            ...seatCount
+            type: 'update-seat',
+            ...seatUpdate
         })
     }
 
-    const [state, dispatch] = React.useReducer(reducer, initialState)
+    //keep track of seat counts. 
+    // const seatCounter = (seatCount) => {
+    //     dispatch({
+    //         type: 'track-seat-count',
+    //         ...seatCount
+    //     })
+    // }
 
+    const [state, dispatch] = React.useReducer(reducer, initialState)
 
 //If I have two return state.... it will do until that bit and then return... so it returend without rendering the seats. 
 //this return is for the whole componeent....    
 
 
-// if (state.status === 'error' ) {
-//     window.alert(state.error)
-// } else if (state.status === 'purchased') {
-//    return (<CustomizedSnackbars status={state.status} snackBarRemoval={snackBarRemoval}/>  
-
-//      )
-// }
-    // check for status of purchase. 
-
-
+if (state.status === 'error' ) {
+    window.alert(state.error)
+} 
 
     return (
 
         <React.Fragment>
-        
-        
+  
         {state.status === 'purchased' ? <CustomizedSnackbars status={state.status} snackBarRemoval={snackBarRemoval}/> : <> </>  }
         {/* cannot return empty object.. instead could put the status being error with a window alert.  */}
-        
-    
-        <BookingContext.Provider
-
+            <BookingContext.Provider
             value={
                 {
                     state,
@@ -161,7 +155,8 @@ export const BookingProvider = ({
                         removeModal,
                         purchaseTicketFailure,
                         purchaseTicketSuccess,
-                        seatCounter
+                        updateSeats
+                        // seatCounter
 
                     },
                 }
@@ -169,8 +164,14 @@ export const BookingProvider = ({
 
             {
                 children
-            } </BookingContext.Provider>
+            } 
 
+            </BookingContext.Provider>
             </React.Fragment>
     )
 }
+
+const SeatText = styled.div`
+color: white;
+font-size: 2em;
+`

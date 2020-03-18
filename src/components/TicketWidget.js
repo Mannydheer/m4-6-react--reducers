@@ -1,7 +1,4 @@
-import React, {
-  useContext,
-  useState
-} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -22,15 +19,12 @@ import Seat from './Seat';
 
 const TicketWidget = () => {
 
-  const {
+  const { 
     state: {
       numOfRows,
       seatsPerRow,
       hasLoaded,
       seats
-    },
-    actions: {
-      receiveSeatInfoFromServer
     }
   } = React.useContext(SeatContext);
   //need to return since it is a function

@@ -1,34 +1,61 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {BookingContext} from './BookingContext';
-import { SeatContext } from './SeatContext';
 import FormDialog from './FormDialog';
-import CustomizedSnackbars from './Snackbar';
 import styled from 'styled-components';
 
 
+let holder = [];
 
 const PurchaseModal = () => {
     const {
         state: state,
-        actions: {seatCounter, receiveSelection, removeModal}} = React.useContext(BookingContext)
-console.log(state, 'in purchase modeal')
+        actions: {removeModal}} = React.useContext(BookingContext)
+
+React.useEffect(() => {
+
+        holder.push({state});
+    
+
+ 
+  }, [state]);
 
 
 return <React.Fragment>
-    <SeatCounter>
-        hialdkjaklsjdlaksjd
-    </SeatCounter>
+    <SelectedSeat>
+    {state.status === 'seat-selected' ? 
+    <div> <div>Current Seat: </div>
 
-    
+         Seat#: {state.selectSeatId} Price: {state.price}
+    </div> : <PickSeat>Pick A Seat!</PickSeat>}
+    </SelectedSeat>
+    {/* only show formdialog if he hits buy buttons;..most liekly a map...  */}
+    {/* <FormDialog selectSeatId={state.selectSeatId} removeModal={removeModal} state={state} /> */}
     <FormDialog selectSeatId={state.selectSeatId} removeModal={removeModal} state={state} />
+
     </React.Fragment>
 
 }
 
 export default PurchaseModal;
 
-const SeatCounter = styled.div`
+
+
+
+const SelectedSeat = styled.div`
 color: white;
+font-size: 2rem;
+text-align: center
+background-color: white;
+border-radius: 25px;
 `
 
+const PickSeat = styled.div`
+color: white;
+font-size: 3rem;
+text-align: center;
+background-color: purple;
+border-radius: 25px;
+width: 120%;
 
+
+`

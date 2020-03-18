@@ -30,3 +30,18 @@ export const getSeatIndex = seatNum => seatNum - 1;
 //     seatIndex: seatNum - 1,
 //   };
 // };
+
+
+
+    //  Object.values(state.seats).map(seat => {
+    //                 console.log(seat)
+    //                 return {
+                      
+
+    //                 }
+    //             })
+    //             )
+            
+
+
+

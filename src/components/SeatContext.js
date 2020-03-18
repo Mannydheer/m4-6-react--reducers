@@ -1,6 +1,7 @@
 import React from 'react';
 import { createContext } from 'react';
 import { BookingContext } from 'react';
+import styled from 'styled-components';
 
 //this is exported to app,js
 export const SeatContext = createContext();
@@ -45,6 +46,38 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
                 
             }
         }
+
+        case 'count-the-seats': {
+            let updateSeatsWithCount = {...state.seats};
+            updateSeatsWithCount[action.seatSelected.seatId].isClicked = action.seatSelected.select;
+            
+            return {
+                ...state,
+                seats: updateSeatsWithCount,
+
+
+            }
+        }
+        case 'clicked-buy-now': {
+            return {
+                ...state,
+                isBought: action.buyClicked
+                
+            }
+        }
+        case 'remove-buy-now': {
+            return {
+                ...state,
+                isBought: action.alreadyBought.alreadybought,
+                
+            }
+        }
+        case 'change-purchase-status': {
+            return {
+                ...state,
+                isPurchased: action.purchaseStatus.isPurchased
+            }
+        } 
         default:
             throw new Error(`Unrecognized action: ${action.type}`);
     
@@ -55,14 +88,16 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
 export const SeatProvider = ({ children }) => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
+
+    
+
+
     //anything associated withr educer, state... will cause a changer. 
     //re-renders everything associated with this STATE. 
-  
+    console.log(state, 'this is the seats')
 
+    let seatHolder = state.seats; //holds all seats
 
-
-    console.log(state, 'state in seat context')
-// It is as if APP WAS INSIDE, IT HAS ACCESS - see SeatContext.Provider
     const receiveSeatInfoFromServer = data => {
         dispatch({
             //we are passing in the type and also ac opy of the data. 
@@ -70,16 +105,44 @@ export const SeatProvider = ({ children }) => {
             ...data,
         });
     };
-
     const bookTheSeat = (seatAvailability) => {
-
-        console.log(seatAvailability, 'in seat context the return of form dialog')
         dispatch({
             type: 'mark-seat-as-purchased',
             seatAvailability
-
         })
     }
+    const seatCounter = (seatSelected) => {
+        console.log(seatSelected, 'in seat context the return of form dialog')
+        dispatch({
+            type: 'count-the-seats',
+            seatSelected,
+        })
+    }
+
+    const triggerBuyNow = (buyClicked) => {
+        dispatch({
+            type: 'clicked-buy-now',
+            buyClicked
+
+            
+        })
+    }
+    const removeModal = (alreadyBought) => {
+        console.log(alreadyBought, 'REMOVE MODAL')
+        dispatch({
+            type: 'remove-buy-now',
+            alreadyBought
+        })
+    }
+    const changePurchaseStatus = (purchaseStatus) => {
+        console.log(purchaseStatus, 'PRUCHASESTATUS')
+        dispatch({
+            type: 'change-purchase-status',
+            purchaseStatus
+        })
+    }
+
+
     return (
         <SeatContext.Provider
        
@@ -88,14 +151,72 @@ export const SeatProvider = ({ children }) => {
                 state,
                 actions: {
                     receiveSeatInfoFromServer,
-                    bookTheSeat
+                    bookTheSeat, 
+                    seatCounter,
+                    triggerBuyNow,
+                    removeModal,
+                    changePurchaseStatus,
+                    
                 },
             }}
     >
         {children}
-       
+
+        <Text>
+            <Title> Your Selected Seats</Title>
+            {seatHolder !== null ? Object.keys(seatHolder).map(seatNum => {
+                return <div>
+                    {state.seats[seatNum].isClicked ?
+                     <div> 
+                        <span>Seat#: {seatNum} - </span>
+                        <span>Price $: {state.seats[seatNum].price}</span>
+                        {/* <span>{state.seats[seatNum].price}</span> */}
+                    </div> : ''}
+                </div>
+            }) : <div> Loading</div>}
+            <Button onClick={() => {
+                triggerBuyNow(true)
+            }}>
+                Buy Now
+            </Button>
+            
+        </Text>
         </SeatContext.Provider>
     );
 };
 
 //this is exported to index.js
+
+const Text = styled.div`
+color: black;
+font-size: 1.5em;
+background-color: white;
+border-radius: 25px;
+height: 50%;
+width: 30%;
+position: absolute;
+bottom: 30%;
+right: 7%;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+padding: 0;
+margin 0;
+`
+
+const Title = styled.div`
+color: white;
+font-size: 2em;
+background-color: black
+
+`
+
+const Button = styled.button`
+background-color: purple;
+color: white;
+font-size: 1.5em;
+position: absolute;
+bottom: 0;
+right: 40%;
+border-radius: 25px;
+`

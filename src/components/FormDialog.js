@@ -1,6 +1,4 @@
-import React, {useState} from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,51 +6,61 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import styled from 'styled-components';
 import BasicTextFields from './textfield';
-import {BookingContext} from './BookingContext';
+import { BookingContext } from './BookingContext';
 import { SeatContext } from './SeatContext';
 
-export default function FormDialog({selectSeatId}) {
+export default function FormDialog({ selectSeatId }) {
 
   const {
     state: state,
-    actions: {receiveSelection, removeModal, purchaseTicketFailure, purchaseTicketSuccess}} = React.useContext(BookingContext)
+    actions: { purchaseTicketFailure, purchaseTicketSuccess } } = React.useContext(BookingContext)
+
+  // ----------------------------------------------
+  const {
+    state: seatState,
+    actions: { bookTheSeat, removeModal, changePurchaseStatus } } = React.useContext(SeatContext);
+  console.log(seatState, 'SEATSTATE')
+
+  let seatsFromSeatContext = seatState.seats; // holds all of the seats from SeatContext. 
 
 
-    const {actions: { bookTheSeat } } = React.useContext(SeatContext);
+  //Hooks ---------------------------------------------
+  const [creditCard, setCreditCard] = React.useState('');
+  const [expiration, setExpiration] = React.useState('');
 
-//Hooks
-const [creditCard, setCreditCard] = React.useState('');
-const [expiration, setExpiration] = React.useState('');
 
-const handleBookSeat = () => {
-  fetch('/api/book-seat', 
-  {method: 'POST',
-  headers: {'Accept': 'application/json',
-  'Content-type': 'application/json'},
-  // must be sent as STRINGIFY to the backend
-  body: JSON.stringify({
-    "seatId": `${selectSeatId}`,
-    "creditCard": `${creditCard}`,
-    "expiration": `${expiration}`
-  })
+  const handleBookSeat = () => {
+    fetch('/api/book-seat',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        },
+        // must be sent as STRINGIFY to the backend
+        body: JSON.stringify({
+          "seatId": `${selectSeatId}`,
+          "creditCard": `${creditCard}`,
+          "expiration": `${expiration}`
+        })
 
-})
-.then(res => {
-  let data = res.json()
-  return data;
-})
-.then(res => {
-  if (res.success === true)
-  {
-    purchaseTicketSuccess({res});
-    bookTheSeat(state.selectSeatId);
-  }else if (res.message) {
-    purchaseTicketFailure({res, selectSeatId, showPrice})
+      })
+      .then(res => {
+        let data = res.json()
+        return data;
+      })
+      .then(res => {
+        if (res.success === true) {
+          purchaseTicketSuccess({ res });
+          bookTheSeat(state.selectSeatId);
+          handlePurchase();
+        } else if (res.message) {
+          purchaseTicketFailure({ res, selectSeatId, showPrice })
+        }
+
+      })
   }
-  
-})
-}
-//
+  //----------------------------------------------
   let showRow;
   let showSeat;
   let showPrice = state.price;
@@ -61,29 +69,54 @@ const handleBookSeat = () => {
     let idSplit = id.split('-');
     showRow = idSplit[0];
     showSeat = idSplit[1];
-    
+
 
   }
- 
+
 
   const handleClose = () => {
-    selectSeatId = null;
-    removeModal({selectSeatId})
+    let alreadybought = seatState.isBought;
+    alreadybought = false;
+    removeModal({ alreadybought})
+
 
   };
+
+  const handlePurchase = () => {
+    let isPurchased = true;
+    changePurchaseStatus({isPurchased})
+
+
+  }
 
   return (
     <div>
 
-{/* Dialog open is no longer true, meaning it is null when handle close is triggered. */}
-      <Dialog open={selectSeatId !== null} onClose={handleClose} aria-labelledby="form-dialog-title">
+
+      {/* selectSeatId !== null */}
+      {/* only open this form dialog when clicking on the buy button.  */}
+      {/* Dialog open is no longer true, meaning it is null when handle close is triggered. */}
+      <Dialog open={seatState.isBought === true && selectSeatId !== null} onClose={handleClose} aria-labelledby="form-dialog-title">
+
         <DialogTitle id="form-dialog-title"><strong>Purchsase Ticket</strong></DialogTitle>
         <DialogContent>
           <DialogContentText>
-           {`You're purchasing 1 ticket for the price of ${state.price}.`}
+            {`You're purchasing 1 ticket for the price of ${state.price}.`}
           </DialogContentText>
           <SeatInfo>
-          <div>
+            {seatsFromSeatContext !== null ? Object.keys(seatsFromSeatContext).map(seatNum => {
+              return <div>
+                {seatState.seats[seatNum].isClicked ?
+                  <div>
+
+                    <span>Seat#: {seatNum} - </span>
+                    <span>Price $: {seatState.seats[seatNum].price}</span>
+                    {/* <span>{state.seats[seatNum].price}</span> */}
+                  </div> : ''}
+              </div>
+            }) : <div> Loading</div>}
+
+            {/* <div>
             <strong>Row</strong>
             <div>{`${showRow}`}</div>
           </div>
@@ -94,24 +127,16 @@ const handleBookSeat = () => {
           <div>
             <strong>Price</strong>
             <div>{showPrice}</div>
-          </div>
+          </div> */}
+
           </SeatInfo>
-          {/* <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          /> */}
           <BasicTextFields setCreditCard={setCreditCard} setExpiration={setExpiration}>
           </BasicTextFields>
-
         </DialogContent>
         <DialogActions>
-          {/* <ButtonTag onClick={handleClose} color="primary">
+          <ButtonTag onClick={handleClose} color="primary">
             Cancel
-          </ButtonTag> */}
+          </ButtonTag>
           <ButtonTag onClick={handleBookSeat} color="primary">
             Purchase
           </ButtonTag>
@@ -132,7 +157,6 @@ font-size: 15px;
 cursor: pointer;
 `
 const SeatInfo = styled.div`
-display: flex;
-justify-content: space-evenly;
+font-size: 1em;
 padding: 20px;
 `
