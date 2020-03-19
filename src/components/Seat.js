@@ -21,10 +21,10 @@ const Seat = ({seatId, rowName, seats}) => {
 //
     const [visible, setVisible] = React.useState(false);
     const visibility = visible ? 'visible' : 'hidden';
+
 //
 
   const [select, setSelected] = React.useState(true);
-  console.log(select,'select inside ')
 
 
 // console.log(state, 'STATE INSIDE')

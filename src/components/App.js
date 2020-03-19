@@ -22,7 +22,6 @@ import styled from 'styled-components';
 
 
 
-
    React.useEffect(() => {
      fetch('/api/seat-availability')
        .then((res) => res.json())
@@ -41,17 +40,11 @@ import styled from 'styled-components';
      <GlobalStyles/>
      <Wrapper>
       <TicketSizing>
-     <TicketWidget/>
+            <TicketWidget/>
      </TicketSizing>
-
-
-      <PurchaseModal/>
-
-     
-
+            <PurchaseModal/>
      </Wrapper> 
-      <FlightTitle>
-      </FlightTitle>
+
 
      </>
    );
@@ -68,27 +61,10 @@ import styled from 'styled-components';
   margin: 0;
   
 }
-
-
 `;
 
 
-const FlightTitle = styled.div `
-display: flex;
-justify-content: center;
-font-size: 5em;
-color: white;
 
-@media only screen and (max-width: 45px) {
-  flex-direction: column;
-  justify-content: center;
-  color: white;
-  font-size: 1.5em;
-  padding: 0;
-  margin: 0;
-}
-
-`;
 
 const TicketSizing = styled.div`
 `

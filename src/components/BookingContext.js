@@ -56,10 +56,8 @@ function reducer(state, action) {
             return {
                 ...state,
                 status: action.receivedStatus,
-
             }
         }
-
         default:
             throw new Error('ERROR');
     }
