@@ -39,9 +39,9 @@ export default function FormDialog({ selectSeatId }) {
         },
         // must be sent as STRINGIFY to the backend
         body: JSON.stringify({
-          "seatId": `${selectSeatId}`,
-          "creditCard": `${creditCard}`,
-          "expiration": `${expiration}`
+          seatId: `${selectSeatId}`,
+          creditCard: `${creditCard}`,
+          expiration: `${expiration}`
         })
 
       })
@@ -108,26 +108,12 @@ export default function FormDialog({ selectSeatId }) {
               return <div>
                 {seatState.seats[seatNum].isClicked ?
                   <div>
-
                     <span>Seat#: {seatNum} - </span>
                     <span>Price $: {seatState.seats[seatNum].price}</span>
                     {/* <span>{state.seats[seatNum].price}</span> */}
                   </div> : ''}
               </div>
             }) : <div> Loading</div>}
-
-            {/* <div>
-            <strong>Row</strong>
-            <div>{`${showRow}`}</div>
-          </div>
-          <div>
-            <strong>Seat</strong>
-            <div>{`${showSeat}`}</div>
-          </div>
-          <div>
-            <strong>Price</strong>
-            <div>{showPrice}</div>
-          </div> */}
 
           </SeatInfo>
           <BasicTextFields setCreditCard={setCreditCard} setExpiration={setExpiration}>

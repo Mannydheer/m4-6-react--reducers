@@ -164,6 +164,11 @@ export const SeatProvider = ({ children }) => {
 
         <Text>
             <Title> Your Selected Seats</Title>
+            <Button onClick={() => {
+                triggerBuyNow(true)
+            }}>
+                Buy Now
+            </Button>
             {seatHolder !== null ? Object.keys(seatHolder).map(seatNum => {
                 return <div>
                     {state.seats[seatNum].isClicked ?
@@ -174,11 +179,7 @@ export const SeatProvider = ({ children }) => {
                     </div> : ''}
                 </div>
             }) : <div> Loading</div>}
-            <Button onClick={() => {
-                triggerBuyNow(true)
-            }}>
-                Buy Now
-            </Button>
+
             
         </Text>
         </SeatContext.Provider>
@@ -189,19 +190,24 @@ export const SeatProvider = ({ children }) => {
 
 const Text = styled.div`
 color: black;
-font-size: 1.5em;
+font-size: 1em;
 background-color: white;
-border-radius: 25px;
-height: 50%;
-width: 30%;
-position: absolute;
-bottom: 30%;
-right: 7%;
-display: flex;
-flex-direction: column;
-flex-wrap: wrap;
+height: 10%;
+width: 100%;
 padding: 0;
 margin 0;
+
+@media only screen and (max-width: 400px) {
+color: green;
+font-size: 1em;
+background-color: white;
+padding: 0;
+margin 0;
+width: 100%;
+   
+    
+}
+    
 `
 
 const Title = styled.div`
@@ -209,14 +215,13 @@ color: white;
 font-size: 2em;
 background-color: black
 
+
 `
 
 const Button = styled.button`
 background-color: purple;
 color: white;
 font-size: 1.5em;
-position: absolute;
-bottom: 0;
-right: 40%;
+
 border-radius: 25px;
 `

@@ -50,9 +50,6 @@ function reducer(state, action) {
                 error: null,
                 selectSeatId: null,
                 price: null
-                
-
-
             }
         }
         case 'remove-snackBar': {
@@ -62,13 +59,7 @@ function reducer(state, action) {
 
             }
         }
-        
-        // case 'track-seat-count': {
-        //     return {
-        //         ...state,
-        //         seatCounter: action.seatCount,
-        //     }
-        // }
+
         default:
             throw new Error('ERROR');
     }

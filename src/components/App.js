@@ -8,6 +8,9 @@
 import styled from 'styled-components';
 
 
+
+
+
  function App() {
    //keep in mind, it's like App was inside SeatProvider.
    const {
@@ -34,21 +37,22 @@ import styled from 'styled-components';
 
    //we only want this code to redner once so the array is empty. 
    return ( <>
+   
      <GlobalStyles/>
      <Wrapper>
+      <TicketSizing>
      <TicketWidget/>
-     {
-       /* Because it is a child of App? */ }
+     </TicketSizing>
+
+
       <PurchaseModal/>
-      <div>
-      {/* {state !== undefined ? <SeatCounter state={state}/> : <div></div> } */}
-      </div>
+
      
 
      </Wrapper> 
-     <FlightTitle>
-       SEATBOOKER.CA
-     </FlightTitle>
+      <FlightTitle>
+      </FlightTitle>
+
      </>
    );
  }
@@ -57,8 +61,14 @@ import styled from 'styled-components';
  const Wrapper = styled.div `
  display: flex;
  justify-content: space-around;
- height: 80vh;
- padding: 50px;
+ @media only screen and (max-width: 450px) {
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  
+}
+
 
 `;
 
@@ -69,4 +79,16 @@ justify-content: center;
 font-size: 5em;
 color: white;
 
+@media only screen and (max-width: 45px) {
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  font-size: 1.5em;
+  padding: 0;
+  margin: 0;
+}
+
 `;
+
+const TicketSizing = styled.div`
+`

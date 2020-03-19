@@ -20,7 +20,7 @@ const Seat = ({seatId, rowName, seats}) => {
     actions: {seatCounter}} = React.useContext(SeatContext)
 //
     const [visible, setVisible] = React.useState(false);
-    const visibility = visible ? 'visible' : 'hidden'
+    const visibility = visible ? 'visible' : 'hidden';
 //
 
   const [select, setSelected] = React.useState(true);
@@ -70,7 +70,6 @@ const Seat = ({seatId, rowName, seats}) => {
             seatCounter({seatId, seatPrice, select});
             setVisible(!visible);
             setSelected(!select);
-          
           }}>
             <SeatSrc/>
        </Btn>
@@ -90,6 +89,8 @@ const Seat = ({seatId, rowName, seats}) => {
   const Btn = styled.button`
   background: none;
   border: none;
+  margin: 0;
+  padding: 0;
 
 
   &:hover {

@@ -47,6 +47,17 @@ font-size: 2rem;
 text-align: center
 background-color: white;
 border-radius: 25px;
+
+
+@media only screen and (max-width: 400px) {
+    color: black;
+    background-color: white;
+    font-size: 0.5rem;
+  
+ 
+ 
+   
+   }
 `
 
 const PickSeat = styled.div`
@@ -56,6 +67,21 @@ text-align: center;
 background-color: purple;
 border-radius: 25px;
 width: 120%;
+color: black;
+   background-color: white;
+
+@media only screen and (max-width: 400px) {
+   color: black;
+   background-color: white;
+   font-size: 1rem;
+   padding:1rem;
+   text-align: start;
+   
+ 
+   
+  }
+
+
 
 
 `

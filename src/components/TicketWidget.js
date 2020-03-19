@@ -67,6 +67,7 @@ const Wrapper = styled.div `
   border-radius: 3px;
   color: black;
   
+  
 
 `;
 
@@ -84,7 +85,14 @@ const RowLabel = styled.div `
 `;
 
 const SeatWrapper = styled.div `
-  padding: 10px;
+ padding-right: 1em;
+
+ @media only screen and (max-width: 400px) {
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+
+}
  
 
 `;
