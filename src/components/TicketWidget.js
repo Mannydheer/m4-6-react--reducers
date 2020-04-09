@@ -2,49 +2,76 @@ import React from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { getRowName, getSeatNum } from '../helpers';
-import { range } from '../utils';
+import {
+  getRowName,
+  getSeatNum
+} from '../helpers';
+import {
+  range
+} from '../utils';
+import {
+  SeatContext
+} from './SeatContext';
+
+// import seatAvailabilityChecker from './Seat'
+import Seat from './Seat';
+
 
 const TicketWidget = () => {
-  // TODO: use values from Context
-  const numOfRows = 6;
-  const seatsPerRow = 6;
 
-  // TODO: implement the loading spinner <CircularProgress />
-  // with the hasLoaded flag
+  const { 
+    state: {
+      numOfRows,
+      seatsPerRow,
+      hasLoaded,
+      seats
+    }
+  } = React.useContext(SeatContext);
+  //need to return since it is a function
+  if (hasLoaded === false) {
+    return <CircularProgress></CircularProgress>
+  }
 
-  return (
-    <Wrapper>
-      {range(numOfRows).map(rowIndex => {
+  return ( <Wrapper> 
+    {range(numOfRows).map(rowIndex => {
         const rowName = getRowName(rowIndex);
 
-        return (
-          <Row key={rowIndex}>
-            <RowLabel>Row {rowName}</RowLabel>
-            {range(seatsPerRow).map(seatIndex => {
+    return (
+      <Row key = {rowIndex} >
+          <RowLabel > Row {rowName}
+           </RowLabel> {
+            range(seatsPerRow).map(seatIndex => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
-              return (
-                <SeatWrapper key={seatId}>
-                  {/* TODO: Render the actual <Seat /> */}
-                </SeatWrapper>
-              );
-            })}
-          </Row>
-        );
-      })}
-    </Wrapper>
-  );
-};
 
-const Wrapper = styled.div`
+              return (
+              <SeatWrapper key = { seatId } >
+          <Seat 
+                key={seatId} //very important, react tracks this. 
+                seatId = {seatId}
+                rowName = {rowName}
+                seats = {seats}/>
+              </SeatWrapper>
+              );
+            })
+          } </Row>
+        );
+      })
+    } </Wrapper>
+  );
+
+};
+const Wrapper = styled.div `
   background: #eee;
   border: 1px solid #ccc;
   border-radius: 3px;
-  padding: 8px;
+  color: black;
+  
+  
+
 `;
 
-const Row = styled.div`
+const Row = styled.div `
   display: flex;
   position: relative;
 
@@ -53,12 +80,24 @@ const Row = styled.div`
   }
 `;
 
-const RowLabel = styled.div`
+const RowLabel = styled.div `
   font-weight: bold;
 `;
 
-const SeatWrapper = styled.div`
-  padding: 5px;
+const SeatWrapper = styled.div `
+ padding-right: 1em;
+
+ @media only screen and (max-width: 400px) {
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+
+}
+ 
+
 `;
 
 export default TicketWidget;
+
+
+////////

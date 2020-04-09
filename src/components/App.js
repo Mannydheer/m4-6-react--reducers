@@ -1,14 +1,70 @@
-import React from 'react';
+ import React from 'react';
+ import {
+   SeatContext
+ } from './SeatContext';
+ import GlobalStyles from './GlobalStyles';
+ import TicketWidget from './TicketWidget';
+ import PurchaseModal from './PurchaseModal';
+import styled from 'styled-components';
 
-import GlobalStyles from './GlobalStyles';
 
-function App() {
-  return (
-    <>
-      <GlobalStyles />
-      TODO: write code
-    </>
-  );
+
+
+
+ function App() {
+   //keep in mind, it's like App was inside SeatProvider.
+   const {
+    
+     actions: {
+       receiveSeatInfoFromServer
+     }
+   } = React.useContext(SeatContext);
+
+
+
+   React.useEffect(() => {
+     fetch('/api/seat-availability')
+       .then((res) => res.json())
+       .then((data) => {
+         receiveSeatInfoFromServer(data)
+
+       });
+   }, []);
+
+
+
+
+   //we only want this code to redner once so the array is empty. 
+   return ( <>
+   
+     <GlobalStyles/>
+     <Wrapper>
+      <TicketSizing>
+            <TicketWidget/>
+     </TicketSizing>
+            <PurchaseModal/>
+     </Wrapper> 
+
+
+     </>
+   );
+ }
+ export default App;
+
+ const Wrapper = styled.div `
+ display: flex;
+ justify-content: space-around;
+ @media only screen and (max-width: 450px) {
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  
 }
+`;
 
-export default App;
+
+
+
+const TicketSizing = styled.div`
+`

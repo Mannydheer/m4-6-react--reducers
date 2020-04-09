@@ -86,6 +86,8 @@ function reducer(state, action) {
 }
 
 const App = () => {
+  //if we didnt import... React.useReducer
+  // it will take two things, reducer function and states. 
   const [state, dispatch] = useReducer(reducer, 0);
 
   return (
@@ -175,7 +177,11 @@ If not, what could be improved?
 ---
 
 ```js
-{ type: 'click-to-open-modal', state: { newModal: 'login' } }
+//change type ... 'click-login-link
+// { type: 'click-to-open-modal', state: { newModal: 'login' } } old one
+{ type: 'click-login-modal', state: { newModal: 'login' } }
+//newModal can be logout, register.....
+
 ```
 
 ---
@@ -188,13 +194,18 @@ If not, what could be improved?
 
 ```js
 { type: 'set-player-coordinates', x: 41, y: 22 }
+{ type: 'move-player', x: 41, y: 22 } 
+
+
 ```
 
 ---
 
 ```js
 {
-  event: 'logout';
+  type :'click-logout',event: 'logout';
+  type :'handle-logout',event: 'logout';
+
 }
 ```
 
@@ -298,32 +309,101 @@ const LightSwitch = () => {
     </>
   );
 };
+
+// with reducer update. 
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'TOGGLE_LIGHT: {
+      return !state;
+    }
+
+    default:
+      throw new Error('Whut?');
+  }
+
+  const LightSwitch = () => {
+  const [state, dispatch] = useReducer(reducer, false);
+
+  return (
+    <>
+      Light is {state ? 'on' : 'off'}.
+      <button onClick={() => dispatch('TOGGLE_LIGHT')}>Toggle</button>
+    </>
+  );
+};
+  
+}
 ```
 
 ---
 
 ```jsx
+
+function reducer (state, action) {
+  switch (action.type) {
+    case 'REQUEST_DATA': {
+      return 'loading';
+
+    }
+    case 'RECEIVE_DATA': {
+      return 'idle'
+
+    }
+    case 'RECEIVE_ERROR': {
+      return 'error'
+
+    }
+    default:
+      throw new Error('Error: unrecognuzed action') //good practise. 
+
+      }
 function App() {
-  const [status, setStatus] = React.useState('idle');
+  const [state, dispatch] = useReducer(reducer, 'idle');
+  // const [status, setStatus] = React.useState('idle');
 
   return (
     <form
       onSubmit={() => {
-        setStatus('loading');
+        dispatch('REQUEST_DATA');
 
         getStatusFromServer()
           .then(() => {
-            setStatus('idle');
+            dispatch('RECEIVE_DATA');
           })
           .catch(() => {
-            setStatus('error');
+            dispatch('RECEIVE_ERROR');
           });
       }}
     >
-      Status is: {status}
+      Status is: {state}
       <button>Submit</button>
     </form>
   );
+  }
+  //create a reducer based on the bottom. 
+// }
+// function App() {
+//   const [status, setStatus] = React.useState('idle');
+
+//   return (
+//     <form
+//       onSubmit={() => {
+//         setStatus('loading');
+
+//         getStatusFromServer()
+//           .then(() => {
+//             setStatus('idle');
+//           })
+//           .catch(() => {
+//             setStatus('error');
+//           });
+//       }}
+//     >
+//       Status is: {status}
+//       <button>Submit</button>
+//     </form>
+//   );
 }
 ```
 
@@ -332,20 +412,49 @@ function App() {
 ```jsx
 export const ModalContext = React.createContext(null);
 
+const reducer (state, action) = {
+  switch (action.type) {
+    case 'OPEN_MODAL': {
+      return action.modal;
+    }
+    case 'CLOSE_MODAL': {
+      return null;
+    }
+    default:
+      throw new Error('Unrecognized action');
+  }
+}
 export const ModalProvider = ({ children }) => {
-  const [currentModal, setCurrentModal] = React.useState(null);
+  const [state, dispatch] = useReducer(reducer, null) //default state is null
+  // const [currentModal, setCurrentModal] = React.useState(null);
+
+  const openModal = modal => dispatch({type: 'OPEN_MODAL', modal })
+  const closeModal = modal => dispatch({type: 'CLOSE_MODAL'})
 
   return (
     <ModalContext.Provider
       value={{
-        currentModal,
-        setCurrentModal,
+        currentModal: state,
+        openModal,
+        closeModal
       }}
     >
       {children}
     </ModalContext.Provider>
   );
 };
+
+//   return (
+//     <ModalContext.Provider
+//       value={{
+//         currentModal,
+//         setCurrentModal,
+//       }}
+//     >
+//       {children}
+//     </ModalContext.Provider>
+//   );
+// };
 ```
 
 ---
@@ -359,7 +468,7 @@ It's important that you don't _mutate_ the existing state:
 function reducer(state, action) {
   switch (action.type) {
     case 'updateUserInfo': {
-      state.firstName = action.firstName;
+      state.firstName = action.firstName; // we dont want to do this... we just want to return a new state that is updated at that point. 
       state.lastName = action.lastName;
 
       return state;
@@ -388,6 +497,8 @@ function grantHalfBean(someObject) {
 const updatedObj = grantHalfBean(obj);
 
 console.log(obj === updatedObj);
+
+//true... updatedObj is not a copy, its a reference to the oriinal object
 ```
 
 ---
@@ -452,7 +563,8 @@ const initialState = {
 function reducer(state, action) {
   if (action.type === 'increment-beans') {
     return {
-      numOfButtons: state.numOfButtons,
+      // numOfButtons: state.numOfButtons,
+      ...state,
       numOfBeans: state.numOfBeans + 0.5,
     };
   }
@@ -505,20 +617,55 @@ return {
 Update these objects to use `useReducer`, with a single immutable object
 
 ```jsx
+//this is not defined in any component.
+const initialState = {points: 0,status: 'idle'};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'WIN_POINT': {
+      return{
+      ...state,
+      points: state.point + 1
+      }
+
+    }
+    case 'LOSE_POINT': {
+      return {
+        ...state,
+      points: state.point + 1
+      }
+
+    }
+    case 'START_GAME': {
+      return {
+        ...statem
+        status: 'playing',
+      }
+
+    }
+    default:
+      throw new Error(`${action.type}: no such action`)
+
+  }
+}
+
+
 const Game = () => {
-  const [points, setPoints] = React.useState(0);
-  const [status, setStatus] = React.useState('idle');
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const {points, status} = state; // destructured this state
+  // const [points, setPoints] = React.useState(0);
+  // const [status, setStatus] = React.useState('idle');
 
   return (
     <>
       Your score: {points}.
       {status === 'playing' && (
         <>
-          <button onClick={() => setPoints(points + 1)}>🍓</button>
-          <button onClick={() => setPoints(points - 1)}>💀</button>
+          <button onClick={() => dispatch(type: 'WIN_POINT')}>🍓</button>
+          <button onClick={() => dispatch(type: 'LOSE_POINT')}>💀</button>
         </>
       )}
-      <button onClick={() => setStatus('playing')}>Start game</button>
+      <button onClick={() => dispatch(type: 'START_GAME')}>Start game</button>
     </>
   );
 };
@@ -530,37 +677,71 @@ const Game = () => {
 import sendDataToServer from './some-madeup-place';
 import FormField from './some-other-madeup-place';
 
+const initialState = {firstName: '',lastName: '', email:''};
+
+
+const reducer = (state, action) => {
+
+  switch(action.type) {
+    case 'update-field': {
+      return {
+        ...state,
+        [action.key]: action.value,
+        // could also do
+        //firstName: action.value -- in this case need to duplicate each time. 
+      };
+    }
+    case 'reset-form': {
+      return initialState;
+
+    }
+
+
+  }
+}
+
 const SignUpForm = () => {
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [email, setEmail] = React.useState('');
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const {firstName, lastName, email} = state;
+
+  // const [firstName, setFirstName] = React.useState('');
+  // const [lastName, setLastName] = React.useState('');
+  // const [email, setEmail] = React.useState('');
+
+  const updateField = (key,value) => {
+    dispatch({type: 'update-field', key, value})
+  }
 
   return (
     <form onSubmit={sendDataToServer}>
       <FormField
         label="First Name"
-        value={firstName}
-        onChange={ev => setFirstName(ev.target.value)}
+        value={firstName} //dont need to change now that we;ve deconstructed it. 
+        // onChange={ev => setFirstName(ev.target.value)}
+        onChange={ev => updateField('firstName',ev.target.value)}
+
       />
       <FormField
         label="Last Name"
         value={lastName}
-        onChange={ev => setLastName(ev.target.value)}
+        // onChange={ev => setLastName(ev.target.value)}
+        onChange={ev => updateField('lastName',ev.target.value)}
+
       />
       <FormField
         label="Email"
         value={email}
-        onChange={ev => setEmail(ev.target.value)}
+        // onChange={ev => setEmail(ev.target.value)}
+        onChange={ev => updateField('email',ev.target.value)}
+
+
       />
 
       <button>Submit</button>
       <button
         onClick={ev => {
           ev.preventDefault();
-
-          setFirstName('');
-          setLastName('');
-          setEmail('');
+          reset
         }}
       >
         Reset
