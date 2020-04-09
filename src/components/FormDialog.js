@@ -30,6 +30,22 @@ export default function FormDialog({ selectSeatId }) {
 
 
   const handleBookSeat = () => {
+
+
+
+    let seatHolder = Object.keys(seatsFromSeatContext).filter(seat => {
+      if (seatsFromSeatContext[seat].isClicked === true) {
+        return seat
+      }
+    })
+
+    console.log(seatHolder)
+ const data = {
+   seatId: seatHolder,
+   creditCard: creditCard,
+   expiration: expiration
+ }
+
     fetch('/api/book-seat',
       {
         method: 'POST',
@@ -38,12 +54,7 @@ export default function FormDialog({ selectSeatId }) {
           'Content-type': 'application/json'
         },
         // must be sent as STRINGIFY to the backend
-        body: JSON.stringify({
-          seatId: `${selectSeatId}`,
-          creditCard: `${creditCard}`,
-          expiration: `${expiration}`
-        })
-
+        body: JSON.stringify(data)
       })
       .then(res => {
         let data = res.json()
@@ -57,7 +68,6 @@ export default function FormDialog({ selectSeatId }) {
         } else if (res.message) {
           purchaseTicketFailure({ res, selectSeatId, showPrice })
         }
-
       })
   }
   //----------------------------------------------

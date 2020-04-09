@@ -10,7 +10,7 @@ const BASE_PRICE = 225;
 const PRICE_INCREMENT_PER_ROW = -10;
 let state;
 router.get('/api/seat-availability', (req, res) => {
-  console.log('hihihihi')
+
   if (!state) {
     state = {
       seats: getInitialSeatData(),
@@ -27,12 +27,20 @@ router.get('/api/seat-availability', (req, res) => {
 let lastBookingAttemptSucceeded = false;
 router.post('/api/book-seat', async (req, res) => {
   const { seatId, creditCard, expiration } = req.body;
+  console.log(typeof seatId, 'STATE IN SERVER')
   if (!state) {
     state = {
       seats: getInitialSeatData(),
     };
   }
-  const isAlreadyBooked = !!state.seats[seatId].isBooked;
+
+
+  let isAlreadyBooked = seatId.find(id => {
+    if (state.seats[id].isBooked === true) {
+      return true;
+    }
+  });
+
   await delay(Math.random() * 3000);
   if (!creditCard || !expiration) {
     return res.status(400).json({
@@ -50,11 +58,20 @@ router.post('/api/book-seat', async (req, res) => {
       message: 'An unknown error has occurred. Please try your request again.',
     });
   }
-  lastBookingAttemptSucceeded = !lastBookingAttemptSucceeded;
-  state.seats[seatId].isBooked = true;
-  return res.json({
-    success: true,
-  });
+ 
+
+    lastBookingAttemptSucceeded = !lastBookingAttemptSucceeded;
+
+    seatId.forEach(id => {
+      console.log(id, 'inside foreach ID')
+      state.seats[id].isBooked = true;    
+    });
+    return res.json({
+      success: true,
+    });
+
+  
+
 });
 //////// HELPERS
 const getRowName = rowIndex => {

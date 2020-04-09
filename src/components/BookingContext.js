@@ -23,7 +23,7 @@ function reducer(state, action) {
                 status: 'seat-selected',
                 selectSeatId: action.seatId,
                 price: action.seatPrice,
-                selected: action.isClicked,
+                
             };
         }
         case 'remove-booking-process': {

@@ -5,8 +5,11 @@ const PORT = 5678;
 
 var app = express();
 
+//all middleware below this. 
+
 app.use(express.json());
 app.use(morgan('tiny'))
+//use morgan dev
 
 app.use(require('./routes'));
 

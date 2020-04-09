@@ -59,6 +59,7 @@ const Seat = ({seatId, rowName, seats}) => {
       return (
         <Btn>
           <SeatSrc style={{filter:'grayscale(100%'}}/>
+          
         </Btn>)
     }
     else {
@@ -66,7 +67,7 @@ const Seat = ({seatId, rowName, seats}) => {
 <React.Fragment>
       <Tippy content={`Price: ${seatPrice} Row: ${rowName} Seat: ${getNum}`}>
           <Btn onClick={() => {
-            receiveSelection({seatId, seatPrice, isClicked: select}); //double check isclicked here
+            receiveSelection({seatId, seatPrice, }); //double check isclicked here
             seatCounter({seatId, seatPrice, select});
             setVisible(!visible);
             setSelected(!select);

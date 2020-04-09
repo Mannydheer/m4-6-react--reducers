@@ -19,23 +19,23 @@ const initialState = {
 
 
 
-function reducer (state, action) { //action now holds to keyvalue, type and a copy of data. 
+function reducer(state, action) { //action now holds to keyvalue, type and a copy of data. 
     //todo'
-    
-    switch(action.type) { 
+
+    switch (action.type) {
         case 'receive-seat-info-from-server': {
             return {
                 ...state, //making a copy of the state, and changing the values...
-            hasLoaded: true,
-            seats: action.seats,
-            numOfRows: action.numOfRows,
-            seatsPerRow: action.seatsPerRow
+                hasLoaded: true,
+                seats: action.seats,
+                numOfRows: action.numOfRows,
+                seatsPerRow: action.seatsPerRow
 
-        };
-    }
+            };
+        }
         case 'mark-seat-as-purchased': {
 
-            let changedSeats = {...state.seats};
+            let changedSeats = { ...state.seats };
             //object are reference types...
             changedSeats[action.seatAvailability].isBooked = true;
             changedSeats[action.seatAvailability].isAvailable = true;
@@ -43,14 +43,14 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
             return {
                 ...state,
                 seats: changedSeats
-                
+
             }
         }
 
         case 'count-the-seats': {
-            let updateSeatsWithCount = {...state.seats};
+            let updateSeatsWithCount = { ...state.seats };
             updateSeatsWithCount[action.seatSelected.seatId].isClicked = action.seatSelected.select;
-            
+
             return {
                 ...state,
                 seats: updateSeatsWithCount,
@@ -62,14 +62,14 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
             return {
                 ...state,
                 isBought: action.buyClicked
-                
+
             }
         }
         case 'remove-buy-now': {
             return {
                 ...state,
                 isBought: action.alreadyBought.alreadybought,
-                
+
             }
         }
         case 'change-purchase-status': {
@@ -77,11 +77,11 @@ function reducer (state, action) { //action now holds to keyvalue, type and a co
                 ...state,
                 isPurchased: action.purchaseStatus.isPurchased
             }
-        } 
+        }
         default:
             throw new Error(`Unrecognized action: ${action.type}`);
-    
-}
+
+    }
 }
 //its children being App in this case, because
 //its wrapped around App in the index.js
@@ -90,7 +90,7 @@ export const SeatProvider = ({ children }) => {
 
 
 
-    
+
 
 
     //anything associated withr educer, state... will cause a changer. 
@@ -125,7 +125,7 @@ export const SeatProvider = ({ children }) => {
             type: 'clicked-buy-now',
             buyClicked
 
-            
+
         })
     }
     const removeModal = (alreadyBought) => {
@@ -146,43 +146,42 @@ export const SeatProvider = ({ children }) => {
 
     return (
         <SeatContext.Provider
-       
-        //This is providing the values to the children.
+
+            //This is providing the values to the children.
             value={{
                 state,
                 actions: {
                     receiveSeatInfoFromServer,
-                    bookTheSeat, 
+                    bookTheSeat,
                     seatCounter,
                     triggerBuyNow,
                     removeModal,
                     changePurchaseStatus,
-                    
                 },
             }}
-    >
-        {children}
+        >
+            {children}
 
-        <Text>
-            <Title> Your Selected Seats</Title>
-            <Button onClick={() => {
-                triggerBuyNow(true)
-            }}>
-                Buy Now
-            </Button>
-            {seatHolder !== null ? Object.keys(seatHolder).map(seatNum => {
-                return <div>
-                    {state.seats[seatNum].isClicked ?
-                     <div> 
-                        <span>Seat#: {seatNum} - </span>
-                        <span>Price $: {state.seats[seatNum].price}</span>
-                        {/* <span>{state.seats[seatNum].price}</span> */}
-                    </div> : ''}
-                </div>
-            }) : <div> Loading</div>}
+            <Text>
+                <Title> Your Selected Seats</Title>
+                <Button onClick={() => {
+                    triggerBuyNow(true)
+                }}>
+                    Buy Now
+        </Button>
+                {seatHolder !== null ? Object.keys(seatHolder).map(seatNum => {
+                    return <div>
+                        {state.seats[seatNum].isClicked ?
+                            <div>
+                                <span>Seat#: {seatNum} - </span>
+                                <span>Price $: {state.seats[seatNum].price}</span>
+                                {/* <span>{state.seats[seatNum].price}</span> */}
+                            </div> : ''}
+                    </div>
+                }) : <div> Loading</div>}
 
-            
-        </Text>
+
+            </Text>
         </SeatContext.Provider>
     );
 };

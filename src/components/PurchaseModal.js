@@ -30,7 +30,7 @@ return <React.Fragment>
     </SelectedSeat>
     {/* only show formdialog if he hits buy buttons;..most liekly a map...  */}
     {/* <FormDialog selectSeatId={state.selectSeatId} removeModal={removeModal} state={state} /> */}
-    <FormDialog selectSeatId={state.selectSeatId} removeModal={removeModal} state={state} />
+    <FormDialog selectSeatId={state.selectSeatId}/>
 
     </React.Fragment>
 
